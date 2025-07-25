@@ -19,7 +19,6 @@ from graphrepo.logger import Logger
 from graphrepo.singleton import Singleton
 from graphrepo import miners
 
-
 LG = Logger()
 
 
@@ -53,10 +52,12 @@ class MineManager(metaclass=Singleton):
         Throws exception if the connection can not pe realized
         """
         try:
-            self.graph = Graph(host=self.config.ct.db_url,
-                               user=self.config.ct.db_user,
-                               password=self.config.ct.db_pwd,
-                               http_port=self.config.ct.port)
+            self.graph = Graph(
+                host=self.config.ct.db_url,
+                user=self.config.ct.db_user,
+                password=self.config.ct.db_pwd,
+                port=self.config.ct.port
+            )
             self.node_matcher = NodeMatcher(self.graph)
             self.rel_matcher = RelationshipMatcher(self.graph)
             self.init_miners()
