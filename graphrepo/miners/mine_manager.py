@@ -53,10 +53,8 @@ class MineManager(metaclass=Singleton):
         """
         try:
             self.graph = Graph(
-                host=self.config.ct.db_url,
-                user=self.config.ct.db_user,
-                password=self.config.ct.db_pwd,
-                port=self.config.ct.port
+                f"bolt://{self.config.ct.db_url}:{self.config.ct.port}",
+                auth=(self.config.ct.db_user, self.config.ct.db_pwd),
             )
             self.node_matcher = NodeMatcher(self.graph)
             self.rel_matcher = RelationshipMatcher(self.graph)
