@@ -22,17 +22,17 @@ The production release can be installed using pip:
 $ pip install graphrepo
 ```
 
-<!--
 #### Alternative: Install the development version
 
 Note that the development version may have new, but unreliable or poorly documented features.
 
+Clone the repository and install it in editable mode so GraphRepo can be imported from your environment:
+
 ```
-$ git clone --recurse-submodules https://github.com/NullConvergence/GraphRepo
-$ cd graphrepo/
-$ pip install -r requirements.txt
+$ git clone --recurse-submodules https://github.com/NullConvergence/GraphRepo.git
+$ cd GraphRepo/
+$ pip install -e .
 ```
--->
 
 
 #### 1.3 Run and configure Neo4j

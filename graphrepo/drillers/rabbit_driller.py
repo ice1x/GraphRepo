@@ -39,13 +39,16 @@ class RabbitDriller(QueueDriller):
         """Establishes a connection to queue"""
         try:
             credentials = pika.PlainCredentials(
-                self.queue['username'], self.queue['password'])
-            self.con_parameters = pika.ConnectionParameters(self.queue['host'],
-                                                            self.queue['port'],
-                                                            self.queue['vhost'],
-                                                            credentials)
-            connection = pika.BlockingConnection(
-                self.con_parameters)
+                self.queue['username'],
+                self.queue['password']
+            )
+            self.con_parameters = pika.ConnectionParameters(
+                self.queue['host'],
+                self.queue['port'],
+                self.queue['vhost'],
+                credentials
+            )
+            connection = pika.BlockingConnection(self.con_parameters)
             channel = connection.channel()
 
             channel.queue_declare(queue=self.queue['queue'], durable=True)
