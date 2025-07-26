@@ -38,6 +38,7 @@ $ pip install -r requirements.txt
 #### 1.3 Run and configure Neo4j
 
 GraphRepo supports **Neo4j 5.x** using the Bolt protocol.
+It has been tested with Neo4j Browser **5.15.0** and Neo4j Server **5.19.0**.
 
 The following instructions assume the Docker daemon is running on your machine:
 

@@ -11,7 +11,7 @@ Requirements
 ============
 
 * Python 3.10 (or newer)
-* Neo4j 5
+* Neo4j 5.19.0 (Browser 5.15.0)
 * Docker (Optional) - we recommend to use Docker for Neo4j (as indicated below)
 
 Installation - using pip
