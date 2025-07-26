@@ -138,72 +138,82 @@ def index_commit_method(graph, cm, batch_size=100):
 
 
 def create_index_authors(graph):
-    query = """
-    CREATE INDEX ON :Developer(hash)
-    """
+    query = (
+        "CREATE INDEX index_developer_hash IF NOT EXISTS "
+        "FOR (n:Developer) ON (n.hash)"
+    )
     graph.run(query)
 
 
 def create_index_commits(graph, hash=True):
     if hash:
-        hash_q = """
-        CREATE INDEX ON :Commit(hash)
-        """
+        hash_q = (
+            "CREATE INDEX index_commit_hash IF NOT EXISTS "
+            "FOR (n:Commit) ON (n.hash)"
+        )
         graph.run(hash_q)
 
-    pid_q = """
-    CREATE INDEX ON :Commit(project_id)
-    """
-
+    pid_q = (
+        "CREATE INDEX index_commit_project_id IF NOT EXISTS "
+        "FOR (n:Commit) ON (n.project_id)"
+    )
     graph.run(pid_q)
 
 
 def create_index_branches(graph, hash=True):
     if hash:
-        hash_q = """
-      CREATE INDEX ON :Branch(hash)
-      """
+        hash_q = (
+            "CREATE INDEX index_branch_hash IF NOT EXISTS "
+            "FOR (n:Branch) ON (n.hash)"
+        )
         graph.run(hash_q)
 
-    pid_q = """
-    CREATE INDEX ON :Branch(project_id)
-    """
+    pid_q = (
+        "CREATE INDEX index_branch_project_id IF NOT EXISTS "
+        "FOR (n:Branch) ON (n.project_id)"
+    )
     graph.run(pid_q)
 
 
 def create_index_files(graph, hash=True):
     if hash:
-        hash_q = """
-        CREATE INDEX ON :File(hash)
-        """
+        hash_q = (
+            "CREATE INDEX index_file_hash IF NOT EXISTS "
+            "FOR (n:File) ON (n.hash)"
+        )
         graph.run(hash_q)
 
-    mhash_q = """
-    CREATE INDEX ON :File(merge_hash)
-    """
+    mhash_q = (
+        "CREATE INDEX index_file_merge_hash IF NOT EXISTS "
+        "FOR (n:File) ON (n.merge_hash)"
+    )
     graph.run(mhash_q)
 
-    pid_q = """
-    CREATE INDEX ON :File(project_id)
-    """
+    pid_q = (
+        "CREATE INDEX index_file_project_id IF NOT EXISTS "
+        "FOR (n:File) ON (n.project_id)"
+    )
     graph.run(pid_q)
 
 
 def create_index_methods(graph, hash=True):
     if hash:
-        hash_q = """
-        CREATE INDEX ON :Method(hash)
-        """
+        hash_q = (
+            "CREATE INDEX index_method_hash IF NOT EXISTS "
+            "FOR (n:Method) ON (n.hash)"
+        )
         graph.run(hash_q)
 
-    mhash_q = """
-    CREATE INDEX ON :Method(merge_hash)
-    """
+    mhash_q = (
+        "CREATE INDEX index_method_merge_hash IF NOT EXISTS "
+        "FOR (n:Method) ON (n.merge_hash)"
+    )
     graph.run(mhash_q)
 
-    pid_q = """
-    CREATE INDEX ON :Method(project_id)
-    """
+    pid_q = (
+        "CREATE INDEX index_method_project_id IF NOT EXISTS "
+        "FOR (n:Method) ON (n.project_id)"
+    )
     graph.run(pid_q)
 
 

@@ -3,12 +3,14 @@ import graphrepo.drillers.batch_utils as utils
 
 
 def create_hash_constraints(graph):
-    """Creates uniqueness constratins on nodes' hash"""
-    query = """CREATE CONSTRAINT ON (n: {}) ASSERT n.hash IS UNIQUE"""
+    """Creates uniqueness constraints on nodes' hash"""
+    query = (
+        "CREATE CONSTRAINT unique_{0}_hash IF NOT EXISTS "
+        "FOR (n:{0}) REQUIRE n.hash IS UNIQUE"
+    )
     nodes = ["Developer", "Branch", "Commit", "File", "Method"]
     for node in nodes:
-        fquery = query.format(node)
-        graph.run(fquery)
+        graph.run(query.format(node))
 
 
 def create_indices(graph, hash_index=True):
