@@ -9,7 +9,7 @@ setup(name="graphrepo",
       description="A tool that maps a Github repo to Neo4j and Helps Mining the Repo in the DB",
       url="https://github.com/NullConvergence/GraphRepo",
       license='Apache License',
-      python_requires='>=3.5',
+      python_requires='>=3.10',
       install_requires=requirements,
       packages=find_packages('.'),
       package_dir={'graphrepo': 'graphrepo'})

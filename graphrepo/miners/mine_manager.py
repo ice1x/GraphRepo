@@ -53,10 +53,10 @@ class MineManager(metaclass=Singleton):
         Throws exception if the connection can not pe realized
         """
         try:
-            self.graph = Graph(host=self.config.ct.db_url,
-                               user=self.config.ct.db_user,
-                               password=self.config.ct.db_pwd,
-                               http_port=self.config.ct.port)
+            uri = f"bolt://{self.config.ct.db_url}:{self.config.ct.port}"
+            self.graph = Graph(uri,
+                               auth=(self.config.ct.db_user,
+                                     self.config.ct.db_pwd))
             self.node_matcher = NodeMatcher(self.graph)
             self.rel_matcher = RelationshipMatcher(self.graph)
             self.init_miners()
@@ -69,7 +69,7 @@ class MineManager(metaclass=Singleton):
         """
         try:
             self.connect()
-        except:
+        except Exception:
             raise ReferenceError("There is no valid "
                                  "database connection. Please "
                                  "configure and connect first.")

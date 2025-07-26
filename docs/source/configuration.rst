@@ -31,7 +31,7 @@ as follows::
 Neo4j configuration
 ====================
 
-GraphRepo connects to Neo4j using the Bold REST API from `py2neo <https://py2neo.org/v4/>`_.
+GraphRepo connects to Neo4j using the Bolt driver from `py2neo <https://py2neo.org/>`_.
 Currently the only attributes needed to connect to Neo4j are the url+port and the authentication credentials.
 All other configurations (e.g., setting the user permissions) are done on the database side.
 

@@ -10,8 +10,8 @@ Under the hood it uses `PyDriller <https://github.com/ishepard/pydriller>`_ to p
 Requirements
 ============
 
-* Python 3.4 (or newer)
-* Neo4j 3
+* Python 3.10 (or newer)
+* Neo4j 5
 * Docker (Optional) - we recommend to use Docker for Neo4j (as indicated below)
 
 Installation - using pip
@@ -39,9 +39,14 @@ Install the requirements:
 
     $ pip install -r requirements.txt
 
-Run a docker instance with Neo4j::
+Run a docker instance with Neo4j (5.x)::
 
-    $ docker run -p 7474:7474 -p 7687:7687 -v $HOME/neo4j/data:/data -v $HOME/neo4j/plugins:/plugins  -e NEO4JLABS_PLUGINS=\[\"apoc\"\]   -e NEO4J_AUTH=neo4j/neo4jj neo4j:3.5.11
+    $ docker run -p 7474:7474 -p 7687:7687 \
+        -v $HOME/neo4j/data:/data \
+        -v $HOME/neo4j/plugins:/plugins \
+        -e NEO4JLABS_PLUGINS=["apoc"] \
+        -e NEO4J_AUTH=neo4j/neo4jj \
+        neo4j:5.19.0
 
 Run the tests::
 
