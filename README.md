@@ -12,7 +12,7 @@ For a complete description, see the [online documentation](https://graphrepo.rea
 ###  1. Installation & First run
 
 #### 1.1 Prereq
-The only requirement is to have Python >=3.5 and Docker installed on your system.
+GraphRepo now requires **Python >=3.10** and Docker installed on your system.
 
 #### 1.2 Install using pip
 
@@ -37,10 +37,17 @@ $ pip install -r requirements.txt
 
 #### 1.3 Run and configure Neo4j
 
+GraphRepo supports **Neo4j 5.x** using the Bolt protocol.
+
 The following instructions assume the Docker daemon is running on your machine:
 
 ```
-$ docker run -p 7474:7474 -p 7687:7687 -v $HOME/neo4j/data:/data -v $HOME/neo4j/plugins:/plugins  -e NEO4JLABS_PLUGINS=\[\"apoc\"\]   -e NEO4J_AUTH=neo4j/neo4jj neo4j:3.5.11
+$ docker run -p 7474:7474 -p 7687:7687 \
+  -v $HOME/neo4j/data:/data \
+  -v $HOME/neo4j/plugins:/plugins \
+  -e NEO4JLABS_PLUGINS=["apoc"] \
+  -e NEO4J_AUTH=neo4j/neo4jj \
+  neo4j:5.19.0
 ```
 
 Open a browser window and go to [http://localhost:7474](http://localhost:7474). Here you can configure the neo4j password.

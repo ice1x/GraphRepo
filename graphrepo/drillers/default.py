@@ -53,10 +53,10 @@ class DefaultDriller():
         Throws exception if the connection can not pe realized
         """
         try:
-            self.graph = Graph(host=self.config.ct.db_url,
-                               user=self.config.ct.db_user,
-                               password=self.config.ct.db_pwd,
-                               port=self.config.ct.port)
+            uri = f"bolt://{self.config.ct.db_url}:{self.config.ct.port}"
+            self.graph = Graph(uri,
+                               auth=(self.config.ct.db_user,
+                                     self.config.ct.db_pwd))
         except Exception as exc:
             LG.log_and_raise(exc)
 
@@ -66,7 +66,7 @@ class DefaultDriller():
         """
         try:
             self._connect()
-        except:
+        except Exception:
             raise ReferenceError("There is no valid "
                                  "database connection. Please "
                                  "configure and connect first.")
