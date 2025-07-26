@@ -16,7 +16,10 @@
 and indexes it in neo4j
 """
 from datetime import datetime
-from pydriller import RepositoryMining
+try:  # PyDriller 2.x
+    from pydriller.repository_mining import RepositoryMining
+except ImportError:
+    from pydriller import RepositoryMining
 
 import graphrepo.utils as utl
 import graphrepo.drillers.batch_utils as b_utl

@@ -18,7 +18,10 @@ and indexes it in neo4j
 from diskcache import Cache
 from datetime import datetime
 from py2neo import Graph
-from pydriller import RepositoryMining
+try:  # PyDriller 2.x
+    from pydriller.repository_mining import RepositoryMining
+except ImportError:  # Fallback for older versions
+    from pydriller import RepositoryMining
 
 import graphrepo.utils as utl
 import graphrepo.drillers.batch_utils as b_utl

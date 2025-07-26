@@ -16,7 +16,10 @@
 from abc import abstractmethod
 from datetime import datetime
 from py2neo import Graph
-from pydriller import RepositoryMining
+try:
+    from pydriller.repository_mining import RepositoryMining
+except ImportError:
+    from pydriller import RepositoryMining
 
 import graphrepo.utils as utl
 from graphrepo.config import Config
