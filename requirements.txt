@@ -2,7 +2,7 @@ lizard
 pytz
 psutil
 py2neo
-pydriller>=2.5
+pydriller==1.9.6
 requests
 pytest
 GitPython
