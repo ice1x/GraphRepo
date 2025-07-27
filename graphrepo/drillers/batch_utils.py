@@ -13,7 +13,7 @@ def batch(iterable, n=1):
 
 def index_commits(graph, commits, batch_size=100):
     query = """
-    UNWIND {commits} AS c
+    UNWIND $commits AS c
     MERGE (nc :Commit { hash: c.hash})
       ON CREATE SET
                 nc = c
@@ -26,7 +26,7 @@ def index_commits(graph, commits, batch_size=100):
 
 def index_parent_commits(graph, parents, batch_size=100):
     query = """
-    UNWIND {ac} AS a
+    UNWIND $ac AS a
     MATCH (x:Commit),(y:Commit)
     WHERE x.hash = a.parent_hash AND y.hash = a.child_hash
     MERGE (x)-[r:Parent{}]->(y)
@@ -37,7 +37,7 @@ def index_parent_commits(graph, parents, batch_size=100):
 
 def index_authors(graph, authors, batch_size=100):
     query = """
-    UNWIND {authors} AS a
+    UNWIND $authors AS a
     MERGE (nd:Developer { hash: a.hash})
       ON CREATE SET nd = a
       ON MATCH SET nd = a
@@ -48,7 +48,7 @@ def index_authors(graph, authors, batch_size=100):
 
 def index_branches(graph, branches, batch_size=100):
     query = """
-    UNWIND {branches} AS a
+    UNWIND $branches AS a
     MERGE (nb:Branch { hash: a.hash})
       ON CREATE SET nb = a
       ON MATCH SET nb = a
@@ -59,7 +59,7 @@ def index_branches(graph, branches, batch_size=100):
 
 def index_branch_commits(graph, bc, batch_size=100):
     query = """
-    UNWIND {ac} AS a
+    UNWIND $ac AS a
     MATCH (x:Branch),(y:Commit)
     WHERE x.hash = a.branch_hash AND y.hash = a.commit_hash
     MERGE (x)-[r:BranchCommit{}]->(y)
@@ -70,7 +70,7 @@ def index_branch_commits(graph, bc, batch_size=100):
 
 def index_files(graph, files, batch_size=100):
     query = """
-    UNWIND {files} AS f
+    UNWIND $files AS f
     MERGE (nf:File { hash: f.hash})
       ON CREATE SET nf = f
       ON MATCH SET nf = f
@@ -81,7 +81,7 @@ def index_files(graph, files, batch_size=100):
 
 def index_methods(graph, methods, batch_size=100):
     query = """
-    UNWIND {methods} AS f
+    UNWIND $methods AS f
     MERGE (nm:Method { hash: f.hash})
       ON CREATE SET nm = f
       ON MATCH SET nm = f
@@ -93,7 +93,7 @@ def index_methods(graph, methods, batch_size=100):
 
 def index_author_commits(graph, ac, batch_size=100):
     query = """
-    UNWIND {ac} AS a
+    UNWIND $ac AS a
     MATCH (x:Developer),(y:Commit)
     WHERE x.hash = a.author_hash AND y.hash = a.commit_hash
     MERGE (x)-[r:Author{timestamp: a.timestamp}]->(y)
@@ -104,7 +104,7 @@ def index_author_commits(graph, ac, batch_size=100):
 
 def index_commit_files(graph, cf, batch_size=100):
     query = """
-    UNWIND {cf} AS a
+    UNWIND $cf AS a
     MATCH (x:Commit),(y:File)
     WHERE x.hash = a.commit_hash AND y.hash = a.file_hash
     MERGE (x)-[r:UpdateFile{}]->(y)
@@ -116,7 +116,7 @@ def index_commit_files(graph, cf, batch_size=100):
 
 def index_file_methods(graph, cf, batch_size=100):
     query = """
-    UNWIND {cf} AS a
+    UNWIND $cf AS a
     MATCH (x:File),(y:Method)
     WHERE x.hash = a.file_hash AND y.hash = a.method_hash
     MERGE (x)-[r:Method{}]->(y)
@@ -127,7 +127,7 @@ def index_file_methods(graph, cf, batch_size=100):
 
 def index_commit_method(graph, cm, batch_size=100):
     query = """
-    UNWIND {cf} AS a
+    UNWIND $cf AS a
     MATCH (x:Commit),(y:Method)
     WHERE x.hash = a.commit_hash AND y.hash = a.method_hash
     MERGE (x)-[r:UpdateMethod]->(y)
