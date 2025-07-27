@@ -224,6 +224,7 @@ def merge_renamed_files(graph, project_id):
     WITH [n1,n2] as ns
     order by id(ns[1]) desc
     CALL apoc.refactor.mergeNodes(ns, {{properties: 'overwrite', mergeRels:true}}) YIELD node
+    WITH node
     MATCH (f:File {{hash: node.hash}}) -[]->(mf:Method) WITH DISTINCT f, mf
     with collect({{hash: mf.hash, new_hash: f.hash}}) as allRows
     unwind allRows as row
@@ -238,6 +239,7 @@ def merge_new_files(graph, project_id):
     WITH [n1,n2] as ns
     order by id(ns[1]) desc
     CALL apoc.refactor.mergeNodes(ns, {{properties: 'overwrite', mergeRels:true}}) YIELD node
+    WITH node
     MATCH (f:File {{hash: node.hash}}) -[]->(mf:Method) WITH DISTINCT f, mf
     with collect({{hash: mf.hash, new_hash: f.hash}}) as allRows
     unwind allRows as row
