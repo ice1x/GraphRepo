@@ -219,48 +219,42 @@ def create_index_methods(graph, hash=True):
 
 def merge_renamed_files(graph, project_id):
     query = """
-        MATCH (n1:File),(n2:File)
-        WHERE n1.project_id = "{0}" and n2.project_id = "{0}" and n1.merge_hash = n2.merge_hash  and id(n1) < id(n2)
-        WITH [n1,n2] as ns
-        order by id(ns[1]) desc
-        CALL apoc.refactor.mergeNodes(ns, {{properties: 'overwrite', mergeRels:true}}) YIELD node
+        MATCH (f:File {project_id: $pid})
+        WITH f.merge_hash AS mh, collect(f) AS nodes
+        WHERE size(nodes) > 1
+        CALL apoc.refactor.mergeNodes(nodes,
+           {properties:'overwrite', mergeRels:true}) YIELD node
         WITH node
-        MATCH (f:File {{hash: node.hash}}) -[]->(mf:Method) WITH DISTINCT f, mf
-        with collect({{hash: mf.hash, new_hash: f.hash}}) as allRows
-        unwind allRows as row
-        match (mu: Method {{hash: row.hash}})
-        SET mu.merge_hash = row.new_hash""".format(project_id)
-    graph.run(query)
+        MATCH (node)-[]->(m:Method)
+        SET m.merge_hash = node.hash
+    """
+    graph.run(query, {"pid": project_id})
 
 
 def merge_new_files(graph, project_id):
     query = """
-        MATCH (n1:File),(n2:File)
-        WHERE n1.project_id = "{0}" and n2.project_id = "{0}" and n1.merge_hash = n2.hash and id(n1) < id(n2)
-        WITH [n1,n2] as ns
-        order by id(ns[1]) desc
-        CALL apoc.refactor.mergeNodes(ns, {{properties: 'overwrite', mergeRels:true}}) YIELD node
+        MATCH (f:File {project_id: $pid})
+        WITH f.hash AS h, collect(f) AS nodes
+        WHERE size(nodes) > 1
+        CALL apoc.refactor.mergeNodes(nodes,
+           {properties:'overwrite', mergeRels:true}) YIELD node
         WITH node
-        MATCH (f:File {{hash: node.hash}}) -[]->(mf:Method) WITH DISTINCT f, mf
-        with collect({{hash: mf.hash, new_hash: f.hash}}) as allRows
-        unwind allRows as row
-        match (mu: Method {{hash: row.hash}})
-        SET mu.merge_hash = row.new_hash
-        """.format(project_id)
-    graph.run(query)
+        MATCH (node)-[]->(m:Method)
+        SET m.merge_hash = node.hash
+    """
+    graph.run(query, {"pid": project_id})
 
 
 def merge_methods(graph, project_id):
     query = """
-        MATCH (n1:Method),(n2:Method)
-        WHERE n1.project_id = "{0}" and n2.project_id = "{0}"
-        and n1.file_name = n2.file_name and n1.name = n2.name and n1.project_id = n2.project_id and n1.merge_hash = n2.merge_hash and id(n1) < id(n2)
-        WITH [n1,n2] as ns
-        order by id(ns[1]) desc
-        CALL apoc.refactor.mergeNodes(ns, {{properties: 'overwrite', mergeRels:true}}) YIELD node
-        return node
-        """.format(project_id)
-    graph.run(query)
+        MATCH (m:Method {project_id: $pid})
+        WITH m.merge_hash AS mh, m.file_name AS fn, m.name AS n, collect(m) AS methods
+        WHERE size(methods) > 1
+        CALL apoc.refactor.mergeNodes(methods,
+           {properties:'overwrite', mergeRels:true}) YIELD node
+        RETURN node
+    """
+    graph.run(query, {"pid": project_id})
 
 
 def merge_files(graph, config):
