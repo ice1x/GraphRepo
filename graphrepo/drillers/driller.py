@@ -18,7 +18,6 @@ and indexes it in neo4j
 from diskcache import Cache
 from datetime import datetime
 from py2neo import Graph
-# PyDriller recently reorganized modules, try all known import locations
 from pydriller import RepositoryMining
 
 import graphrepo.utils as utl
