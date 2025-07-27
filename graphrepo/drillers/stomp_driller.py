@@ -19,10 +19,14 @@ import json
 from abc import abstractmethod
 from datetime import datetime
 from py2neo import Graph
+# PyDriller recently reorganized modules, try all known import locations
 try:
-    from pydriller.repository_mining import RepositoryMining
-except ImportError:
     from pydriller import RepositoryMining
+except ImportError:
+    try:
+        from pydriller.repository_mining import RepositoryMining
+    except ImportError:
+        from pydriller.git_mining import RepositoryMining
 
 import graphrepo.utils as utl
 from graphrepo.config import Config
